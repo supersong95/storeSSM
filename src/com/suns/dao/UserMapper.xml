@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.suns.dao.UserMapper">
+
+
+
+<select id="getByUsernameAndPwd" parameterType="String" resultType="com.suns.entity.User">
+		SELECT * from user 
+		WHERE 
+		username = #{0}
+		and
+		password = #{1}
+	</select>
+<!--  
+	<select id="findByCode" parameterType="string" resultType="com.suns.entity.BaseDict">
+		SELECT * from base_dict WHERE dict_type_code = #{code}
+	</select>
+
+
+	<select id="findByVo" parameterType="com.suns.entity.QueryVo" resultType="com.suns.entity.Customer">
+		SELECT
+		a.cust_id,
+		a.cust_name,
+		b.dict_item_name cust_source,
+		c.dict_item_name cust_industry,
+		d.dict_item_name cust_level,
+	
+		a.cust_mobile,
+		a.cust_phone
+		FROM
+		customer a
+		LEFT JOIN base_dict b ON a.cust_source = b.dict_id
+		LEFT JOIN base_dict c ON a.cust_industry = c.dict_id
+		LEFT JOIN base_dict d ON a.cust_level = d.dict_id
+		
+		<where>
+		<if test="custName !=null and custName != ''">
+		and a.cust_name like '%${custName}%'
+		</if>
+		<if test="custSource !=null and custSource !=''">
+             and a.cust_source = #{custSource}
+		</if>
+		  <if test="custIndustry != null and custIndustry !=''" >
+	        and a.cust_industry = #{custIndustry}
+	      </if>
+	      <if test="custLevel != null and custLevel !=''" >
+	        and a.cust_level = #{custLevel}
+	      </if>
+		
+		</where>
+        limit #{start},#{size}
+	</select>
+	<select id="findCountByVo" parameterType="com.suns.entity.QueryVo" resultType="java.lang.Integer">
+	SELECT
+	    count(*)
+		FROM
+		customer a
+		LEFT JOIN base_dict b ON a.cust_source = b.dict_id
+		LEFT JOIN base_dict c ON a.cust_industry = c.dict_id
+		LEFT JOIN base_dict d ON a.cust_level = d.dict_id
+		
+		<where>
+		<if test="custName !=null and custName != ''">
+		and a.cust_name like '%${custName}%'
+		</if>
+		<if test="custSource !=null and custSource !=''">
+             and a.cust_source = #{custSource}
+		</if>
+		  <if test="custIndustry != null and custIndustry !=''" >
+	        and a.cust_industry = #{custIndustry}
+	      </if>
+	      <if test="custLevel != null and custLevel !=''" >
+	        and a.cust_level = #{custLevel}
+	      </if>
+	     
+		
+		</where>
+	
+	</select>
+		<select id="findCountByVo" parameterType="com.suns.entity.QueryVo" resultType="java.lang.Long">
+	SELECT
+	    count(*)
+		FROM
+		customer
+		 where
+		cuust_id=#{id}
+		
+	
+	
+	</select>
+-->	
+	<insert id="add" parameterType="com.suns.entity.User">
+	INSERT INTO user VALUES(
+		#{uid},
+		#{username},
+		#{password},
+		#{name},
+		#{email},
+		#{telephone},
+		#{birthday},
+		#{sex},
+		#{state},
+		#{code}
+	);
+	</insert>
+</mapper>

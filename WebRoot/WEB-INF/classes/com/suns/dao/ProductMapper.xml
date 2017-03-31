@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.suns.dao.ProductMapper">
+
+
+
+	<select id="findNew" resultType="com.suns.entity.Product">
+		SELECT * from product order by
+		pdate limit 9
+
+
+	</select>
+	<select id="findHot" resultType="com.suns.entity.Product">
+		SELECT * from product
+		where is_hot = "1"
+		order by pdate desc limit 9
+	</select>
+	<select id="getById" parameterType="Long" resultMap="ProductResultMap">
+		SELECT a.pid ,a.pname,a.market_price,a.shop_price,a.pimage,a.pdate,a.is_hot,a.pdesc,a.pflag,b.cname 
+		from product a, category b
+		where pid = #{pid} and a.cid=b.cid
+ 
+	</select>
+
+	<resultMap type="com.suns.entity.Product" id="ProductResultMap">
+       <id property="pid" column="pid"/>
+      <result property="pname" column="pname"/>
+      <result property="market_price" column="market_price"/>
+      <result property="shop_price" column="shop_price"/>
+      <result property="pimage" column="pimage"/>
+      <result property="pdate" column="pdate"/>
+      <result property="is_hot" column="is_hot"/>
+      <result property="pdesc" column="pdesc"/>
+      <result property="pflag" column="pflag"/>
+        <association property="category" javaType="com.suns.entity.Category">
+            <id property="cid" column="cid"/>
+           <result property="cname" column="cname"/>
+         </association>
+    </resultMap>
+	
+	<select id="getByPage"  resultType="com.suns.entity.Product">
+		SELECT * from product
+		where cid = #{cid} limit #{start},#{pageSize}
+
+	</select>
+	<select id="getTotalCount" parameterType="java.lang.String"
+		resultType="Integer">
+		SELECT count(*) from product
+		where cid = #{cid}
+
+	</select>
+	
+	<select id="selectByLike" parameterType="java.lang.String"
+		resultType="com.suns.entity.Product">
+		SELECT *from product WHERE pname like CONCAT('%','${str}','%' )
+
+	</select>
+	
+	
+	
+	<!-- <select id="findByCode" parameterType="string" resultType="com.suns.entity.BaseDict"> 
+		SELECT * from base_dict WHERE dict_type_code = #{code} </select> <select 
+		id="findByVo" parameterType="com.suns.entity.QueryVo" resultType="com.suns.entity.Customer"> 
+		SELECT a.cust_id, a.cust_name, b.dict_item_name cust_source, c.dict_item_name 
+		cust_industry, d.dict_item_name cust_level, a.cust_mobile, a.cust_phone FROM 
+		customer a LEFT JOIN base_dict b ON a.cust_source = b.dict_id LEFT JOIN base_dict 
+		c ON a.cust_industry = c.dict_id LEFT JOIN base_dict d ON a.cust_level = 
+		d.dict_id <where> <if test="custName !=null and custName != ''"> and a.cust_name 
+		like '%${custName}%' </if> <if test="custSource !=null and custSource !=''"> 
+		and a.cust_source = #{custSource} </if> <if test="custIndustry != null and 
+		custIndustry !=''" > and a.cust_industry = #{custIndustry} </if> <if test="custLevel 
+		!= null and custLevel !=''" > and a.cust_level = #{custLevel} </if> </where> 
+		limit #{start},#{size} </select> <select id="findCountByVo" parameterType="com.suns.entity.QueryVo" 
+		resultType="java.lang.Integer"> SELECT count(*) FROM customer a LEFT JOIN 
+		base_dict b ON a.cust_source = b.dict_id LEFT JOIN base_dict c ON a.cust_industry 
+		= c.dict_id LEFT JOIN base_dict d ON a.cust_level = d.dict_id <where> <if 
+		test="custName !=null and custName != ''"> and a.cust_name like '%${custName}%' 
+		</if> <if test="custSource !=null and custSource !=''"> and a.cust_source 
+		= #{custSource} </if> <if test="custIndustry != null and custIndustry !=''" 
+		> and a.cust_industry = #{custIndustry} </if> <if test="custLevel != null 
+		and custLevel !=''" > and a.cust_level = #{custLevel} </if> </where> </select> 
+		<select id="findCountByVo" parameterType="com.suns.entity.QueryVo" resultType="java.lang.Long"> 
+		SELECT count(*) FROM customer where cuust_id=#{id} </select> -->
+	
+</mapper>
